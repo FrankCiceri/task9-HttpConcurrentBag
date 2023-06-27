@@ -8,19 +8,14 @@ namespace Task9
     [SetUpFixture]
     public class SetUpFixture
     {
-        //[OneTimeSetUp]
-        //public void OneTimeSetUp()
-        //{ 
-
-        //}
-
+        
         [OneTimeTearDown]
         public async Task OneTimeTearDown()
         {
             var userClient = new UserServiceClient();
             var walletClient = new WalletServiceClient();
 
-            var usersTasks = TestDataStorage.GetUsers()
+            var usersTasks = TestUserData.GetUsers()
                 .Select(async user =>
                 new { Key = user, Value = await (await walletClient.GetTransactions(user)).Content.ReadAsStringAsync() });
             
@@ -34,7 +29,7 @@ namespace Task9
         }
     }
 
-    public static class TestDataStorage
+    public static class TestUserData
     { 
     
     private static readonly ConcurrentBag<int> _addedUsers = new ConcurrentBag<int>();

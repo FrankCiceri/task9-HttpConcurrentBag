@@ -66,7 +66,7 @@ namespace Task9
             if (enableDelete) 
             {
                 await _userService.DeleteUser(id1); 
-                TestDataStorage.RemoveUser(id1); 
+                TestUserData.RemoveUser(id1); 
             }
                 
 
@@ -86,7 +86,7 @@ namespace Task9
             string getStatus = await _userService.GetUserStatus(id);
 
             var statusCode = await _userService.DeleteUser(id);
-            TestDataStorage.RemoveUser(id);
+            TestUserData.RemoveUser(id);
             
 
 
@@ -104,12 +104,12 @@ namespace Task9
             UserServiceRegisterUserRequest requestBody = new UserServiceRegisterUserRequest();
             int id = await requestBody.GenerateUserId();
             await _userService.DeleteUser(id);
-            TestDataStorage.RemoveUser(id);
+            TestUserData.RemoveUser(id);
 
             string getStatus = await _userService.GetUserStatus(id);
             var setStatusCode = await _userService.SetUserStatus(id, true);
             var deleteStatusCode = await _userService.DeleteUser(id);
-            TestDataStorage.RemoveUser(id);
+            TestUserData.RemoveUser(id);
 
 
             Assert.Multiple(() => {

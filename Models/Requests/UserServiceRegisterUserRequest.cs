@@ -41,7 +41,7 @@ namespace Task9.Models.Requests
             HttpResponseMessage response = await _userService.RegisterUser(this);
             int id = Int32.Parse(await response.Content.ReadAsStringAsync());
             if (response.IsSuccessStatusCode)
-                TestDataStorage.AddUser(id);    
+                TestUserData.AddUser(id);    
 
             return id;
 

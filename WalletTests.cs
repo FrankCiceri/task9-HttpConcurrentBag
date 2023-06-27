@@ -22,7 +22,7 @@ namespace Task9
           
             if (enableDelete) {
                 await _userService.DeleteUser(id);
-                TestDataStorage.RemoveUser(id); }
+                TestUserData.RemoveUser(id); }
                 
                 
             
@@ -108,7 +108,7 @@ namespace Task9
             if (enableDelete)
             {
                 await _userService.DeleteUser(id);
-                TestDataStorage.RemoveUser(id);
+                TestUserData.RemoveUser(id);
             }
 
 
