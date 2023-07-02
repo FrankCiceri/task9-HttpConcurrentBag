@@ -63,7 +63,7 @@ namespace Task9
         [TestCase(0.01, true)]
         [TestCase(9999999.99)]
         [TestCase(10000000)]
-        public async Task GetBalance_OneTrasaction_StatusResponseExpected(double balance,bool negativeBalance = false)
+        public async Task GetBalance_OneTransaction_StatusResponseExpected(double balance,bool negativeBalance = false)
         {
 
             UserServiceRegisterUserRequest requestBody = new UserServiceRegisterUserRequest();

@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Bootcamp AQA\\task9-Http\\Task9.csproj": {}
+    "D:\\Bootcamp AQA\\task9-HttpConcurrentBag\\Task9.csproj": {}
   },
   "projects": {
-    "D:\\Bootcamp AQA\\task9-Http\\Task9.csproj": {
+    "D:\\Bootcamp AQA\\task9-HttpConcurrentBag\\Task9.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Bootcamp AQA\\task9-Http\\Task9.csproj",
+        "projectUniqueName": "D:\\Bootcamp AQA\\task9-HttpConcurrentBag\\Task9.csproj",
         "projectName": "Task9",
-        "projectPath": "D:\\Bootcamp AQA\\task9-Http\\Task9.csproj",
+        "projectPath": "D:\\Bootcamp AQA\\task9-HttpConcurrentBag\\Task9.csproj",
         "packagesPath": "C:\\Users\\frank\\.nuget\\packages\\",
-        "outputPath": "D:\\Bootcamp AQA\\task9-Http\\obj\\",
+        "outputPath": "D:\\Bootcamp AQA\\task9-HttpConcurrentBag\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\frank\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -55,6 +55,18 @@
             "NUnit3TestAdapter": {
               "target": "Package",
               "version": "[4.4.2, )"
+            },
+            "SpecFlow": {
+              "target": "Package",
+              "version": "[3.9.74, )"
+            },
+            "SpecFlow.Assist.Dynamic": {
+              "target": "Package",
+              "version": "[1.4.2, )"
+            },
+            "SpecFlow.NUnit": {
+              "target": "Package",
+              "version": "[3.9.74, )"
             },
             "coverlet.collector": {
               "target": "Package",

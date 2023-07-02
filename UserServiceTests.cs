@@ -85,14 +85,14 @@ namespace Task9
 
             string getStatus = await _userService.GetUserStatus(id);
 
-            var statusCode = await _userService.DeleteUser(id);
+            var deleteStatusCode = await _userService.DeleteUser(id);
             TestDataStorage.RemoveUser(id);
             
 
 
             Assert.Multiple(() => {
                 Assert.That(getStatus, Is.EqualTo("false"));
-                Assert.That(statusCode, Is.EqualTo(HttpStatusCode.OK));
+                Assert.That(deleteStatusCode, Is.EqualTo(HttpStatusCode.OK));
             });
 
 

@@ -1,11 +1,11 @@
 ﻿using Newtonsoft.Json;
-using System.Collections.Concurrent;
 using Task9.Clients;
 using Task9.Models.Responses;
+using TechTalk.SpecFlow;
 
-namespace Task9
+namespace Task9.DI
 {
-    [SetUpFixture]
+    [Binding]
     public class SetUpFixture
     {
         //[OneTimeSetUp]
@@ -14,8 +14,8 @@ namespace Task9
 
         //}
 
-        [OneTimeTearDown]
-        public async Task OneTimeTearDown()
+        [AfterTestRun]
+        public static async Task OneTimeTearDown()
         {
             var userClient = new UserServiceClient();
             var walletClient = new WalletServiceClient();
@@ -23,41 +23,40 @@ namespace Task9
             var usersTasks = TestDataStorage.GetUsers()
                 .Select(async user =>
                 new { Key = user, Value = await (await walletClient.GetTransactions(user)).Content.ReadAsStringAsync() });
-            
+
             var selectedData = await Task.WhenAll(usersTasks);
 
             var deleteTasks = selectedData.ToDictionary(element => element.Key, element => element.Value)
                 .Where(element => JsonConvert.DeserializeObject<List<TransactionsResponse>>(element.Value).Count() == 0)
                 .Select(element => userClient.DeleteUser(element.Key));
 
-           await Task.WhenAll(deleteTasks);
-        }
-    }
-
-    public static class TestDataStorage
-    { 
-    
-    private static readonly ConcurrentBag<int> _addedUsers = new ConcurrentBag<int>();
-    private static readonly ConcurrentBag<int> _deletedUsers = new ConcurrentBag<int>();
-        public static void AddUser(int id)
-        {
-            _addedUsers.Add(id);
-        
+            await Task.WhenAll(deleteTasks);
         }
 
-        public static void RemoveUser(int id)
-        {
-            _deletedUsers.Add(id);
+        //[ScenarioDependencies]
+        //public static ContainerBuilder ScenarioDependencies()
+        //{
 
-        }
 
-        public static IEnumerable<int> GetUsers()        {
+        //    var builder = new ContainerBuilder();
 
-            var finalUsers = _addedUsers.Except(_deletedUsers);
-            return finalUsers.ToArray();
-        
-        }
-    
+        //    builder.RegisterModule<TestDependencyModule>();
+
+        //    return builder;
+
+        //}
+
+        //[BeforeTestRun]
+        //public static void BeforeTestRun()
+        //{
+        //    var container = ScenarioDependencies().Build();
+
+
+        //}
+
+
     }
 
 }
+
+

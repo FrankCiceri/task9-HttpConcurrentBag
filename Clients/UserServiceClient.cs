@@ -72,6 +72,8 @@ namespace Task9.Clients
 
             HttpResponseMessage response = await _client.SendAsync(request);
 
+            TestDataStorage.RemoveUser(userId);
+
             return response.StatusCode;
 
         }

@@ -9,7 +9,7 @@ using Task9.Models.Requests;
 
 namespace Task9.Clients
 {
-    internal class WalletServiceClient
+    public class WalletServiceClient
     {
 
         private readonly HttpClient _client = new HttpClient();
