@@ -13,13 +13,16 @@ namespace Task9.DI
         //{ 
 
         //}
+       
 
-        [AfterTestRun]
+
+
+        [AfterScenario]
         public static async Task OneTimeTearDown()
         {
             var userClient = new UserServiceClient();
             var walletClient = new WalletServiceClient();
-
+            
             var usersTasks = TestDataStorage.GetUsers()
                 .Select(async user =>
                 new { Key = user, Value = await (await walletClient.GetTransactions(user)).Content.ReadAsStringAsync() });

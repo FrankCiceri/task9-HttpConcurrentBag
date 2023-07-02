@@ -7,14 +7,14 @@ using Task9.Clients;
 using Task9.Models.Requests;
 
 
-namespace Task9
+namespace Task9.NunitTests
 {
     [TestFixture]
     public class UserServiceTests
     {
         private readonly UserServiceClient _userService = new UserServiceClient();
 
-        
+
         //2      
         [TestCase(null, null)]
         [TestCase("", null)]
@@ -63,23 +63,24 @@ namespace Task9
             UserServiceRegisterUserRequest requestBody = new UserServiceRegisterUserRequest();
             int id1 = await requestBody.GenerateUserId();
 
-            if (enableDelete) 
+            if (enableDelete)
             {
-                await _userService.DeleteUser(id1); 
-                TestDataStorage.RemoveUser(id1); 
+                await _userService.DeleteUser(id1);
+                TestDataStorage.RemoveUser(id1);
             }
-                
 
-            int id2 = await requestBody.GenerateUserId(); 
+
+            int id2 = await requestBody.GenerateUserId();
 
             //Assert
 
-            Assert.That(id2 , Is.GreaterThan(id1));
+            Assert.That(id2, Is.GreaterThan(id1));
         }
 
         //11,20
         [Test]
-        public async Task DeleteGetUser_NotActive_StatusCodeOK() {
+        public async Task DeleteGetUser_NotActive_StatusCodeOK()
+        {
             UserServiceRegisterUserRequest requestBody = new UserServiceRegisterUserRequest();
             int id = await requestBody.GenerateUserId();
 
@@ -87,10 +88,11 @@ namespace Task9
 
             var deleteStatusCode = await _userService.DeleteUser(id);
             TestDataStorage.RemoveUser(id);
-            
 
 
-            Assert.Multiple(() => {
+
+            Assert.Multiple(() =>
+            {
                 Assert.That(getStatus, Is.EqualTo("false"));
                 Assert.That(deleteStatusCode, Is.EqualTo(HttpStatusCode.OK));
             });
@@ -112,7 +114,8 @@ namespace Task9
             TestDataStorage.RemoveUser(id);
 
 
-            Assert.Multiple(() => {
+            Assert.Multiple(() =>
+            {
                 Assert.That(getStatus, Is.EqualTo("Sequence contains no elements"));
                 Assert.That(setStatusCode, Is.EqualTo(HttpStatusCode.InternalServerError));
                 Assert.That(deleteStatusCode, Is.EqualTo(HttpStatusCode.InternalServerError));
@@ -120,8 +123,8 @@ namespace Task9
 
         }
         //12,13,15,16,17,18,19
-        [TestCase(new [] {false, true})]
-        [TestCase(new[] { true, false, true, true})]
+        [TestCase(new[] { false, true })]
+        [TestCase(new[] { true, false, true, true })]
         public async Task SetGetUser_StatusChange_StatusCodeInternalServerError(bool[] changes)
         {
             //Pre-Condition
@@ -133,18 +136,20 @@ namespace Task9
 
 
 
-            foreach ( var change in changes){
+            foreach (var change in changes)
+            {
 
                 setStatusCode = await _userService.SetUserStatus(id, change);
 
             }
 
             string getStatus = await _userService.GetUserStatus(id);
-            
+
 
             //Assert
 
-            Assert.Multiple(() => {
+            Assert.Multiple(() =>
+            {
                 Assert.That(getStatus, Is.EqualTo($"{changes.Last()}".ToLower()));
                 Assert.That(setStatusCode, Is.EqualTo(HttpStatusCode.OK));
             });

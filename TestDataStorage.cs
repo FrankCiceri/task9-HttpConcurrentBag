@@ -9,13 +9,14 @@ namespace Task9
     private static readonly ConcurrentBag<int> _deletedUsers = new ConcurrentBag<int>();
         public static void AddUser(int id)
         {
-            _addedUsers.Add(id);
-        
+            _addedUsers.Add(id);           
+
         }
 
         public static void RemoveUser(int id)
         {
             _deletedUsers.Add(id);
+            
 
         }
 

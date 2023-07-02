@@ -2,30 +2,32 @@
 using Task9.Clients;
 using Task9.Models.Requests;
 
-namespace Task9
+namespace Task9.NunitTests
 {
     [TestFixture]
     public class WalletTests
     {
         private readonly UserServiceClient _userService = new UserServiceClient();
         private readonly WalletServiceClient _walletService = new WalletServiceClient();
-       
+
         //2,3,
-        [TestCase(false)]        
+        [TestCase(false)]
         [TestCase(true)]
-        public async Task GetBalance_NotActiveUser_StatusResponse500(bool enableDelete) 
+        public async Task GetBalance_NotActiveUser_StatusResponse500(bool enableDelete)
         {
             //Precondition
-           
+
             UserServiceRegisterUserRequest requestBody = new UserServiceRegisterUserRequest();
             int id = await requestBody.GenerateUserId();
-          
-            if (enableDelete) {
+
+            if (enableDelete)
+            {
                 await _userService.DeleteUser(id);
-                TestDataStorage.RemoveUser(id); }
-                
-                
-            
+                TestDataStorage.RemoveUser(id);
+            }
+
+
+
 
             //Action
 
@@ -41,7 +43,7 @@ namespace Task9
         public async Task GetBalance_ActiveUser_StatusResponseOK()
         {
             //Precondition
-            
+
             UserServiceRegisterUserRequest requestBody = new UserServiceRegisterUserRequest();
             int id = await requestBody.GenerateUserId();
             await _userService.SetUserStatus(id, true);
@@ -63,7 +65,7 @@ namespace Task9
         [TestCase(0.01, true)]
         [TestCase(9999999.99)]
         [TestCase(10000000)]
-        public async Task GetBalance_OneTransaction_StatusResponseExpected(double balance,bool negativeBalance = false)
+        public async Task GetBalance_OneTransaction_StatusResponseExpected(double balance, bool negativeBalance = false)
         {
 
             UserServiceRegisterUserRequest requestBody = new UserServiceRegisterUserRequest();
@@ -74,7 +76,7 @@ namespace Task9
             requestChargeBody.SetBody(id, balance);
 
             await (negativeBalance ? requestChargeBody.SetNegativeBalance() : _walletService.Charge(requestChargeBody));
-            
+
 
             //Action 
 
@@ -136,34 +138,35 @@ namespace Task9
         {
 
             //Precondition
-           
+
             UserServiceRegisterUserRequest requestBody = new UserServiceRegisterUserRequest();
             int id = await requestBody.GenerateUserId();
             await _userService.SetUserStatus(id, true);
 
             WalletServiceChargeRequest requestChargeBody = new WalletServiceChargeRequest();
 
-            if (addToDefaultBalance) {                
+            if (addToDefaultBalance)
+            {
                 requestChargeBody.SetBody(id, Math.Round(new Random().NextDouble() * (10000000 - 0.01) + 0.01, 2));
                 await _walletService.Charge(requestChargeBody);
-               
+
             }
-                     
-            requestChargeBody.SetBody(id, amount);            
+
+            requestChargeBody.SetBody(id, amount);
 
             HttpResponseMessage response = await _walletService.Charge(requestChargeBody);
-            
+
             //Assert            
             Assert.That(response.StatusCode, Is.EqualTo(statusCode));
-           
-            
+
+
 
         }
 
         //51,52
-        [TestCase(10001000,HttpStatusCode.OK)]
+        [TestCase(10001000, HttpStatusCode.OK)]
         [TestCase(10001000.01, HttpStatusCode.InternalServerError)]
-       public async Task Charge_NegativeBalance_StatusResponseExpected(double charge, HttpStatusCode statusCode) 
+        public async Task Charge_NegativeBalance_StatusResponseExpected(double charge, HttpStatusCode statusCode)
         {
             //Precondition
 
@@ -172,22 +175,22 @@ namespace Task9
             await _userService.SetUserStatus(id, true);
 
             WalletServiceChargeRequest requestChargeBody = new WalletServiceChargeRequest();
-            requestChargeBody.SetBody(id, 1000);            
+            requestChargeBody.SetBody(id, 1000);
             await requestChargeBody.SetNegativeBalance();
 
             requestChargeBody.SetBody(id, charge);
-            
+
             //Action 
 
             HttpResponseMessage response = await _walletService.Charge(requestChargeBody);
-            
+
             //Assert
 
-            Assert.That(response.StatusCode,Is.EqualTo(statusCode));
+            Assert.That(response.StatusCode, Is.EqualTo(statusCode));
 
-       }
+        }
         //45, 53, 54, 56
-        [Test,TestCaseSource(nameof(CreateRandomNumbers))]
+        [Test, TestCaseSource(nameof(CreateRandomNumbers))]
         public async Task Charge_N_StatusResponseExpected(double balance, double charge, HttpStatusCode statusCode, bool negativeBalance)
         {
 
@@ -204,7 +207,7 @@ namespace Task9
             //Action 
 
             HttpResponseMessage response = await _walletService.Charge(requestChargeBody);
-            
+
             //Assert
 
             Assert.That(response.StatusCode, Is.EqualTo(statusCode));
