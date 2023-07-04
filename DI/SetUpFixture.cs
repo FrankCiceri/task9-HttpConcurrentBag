@@ -17,7 +17,7 @@ namespace Task9.DI
 
 
 
-        [AfterScenario]
+        [AfterFeature]
         public static async Task OneTimeTearDown()
         {
             var userClient = new UserServiceClient();
